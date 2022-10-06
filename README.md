@@ -1,5 +1,5 @@
 # AMAZING-EVENTS
 
 ## STATUS PAGE
-Branch Task1
-Branch Task2
+Branch Task1 (static cards)     
+Branch Task2 (dynamic cards)
