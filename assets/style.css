@@ -1,0 +1,29 @@
+.actv{
+    color: #A5C9CA !important
+}
+
+.contenedorHeader{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 20vh;
+}
+
+main{
+    min-height: 60vh;
+    width: 100%;
+}
+
+.contenedorHeader h1{
+    color:white;
+}
+
+.bg-button-main{
+    background-color: #395B64!important;
+    border: none;
+}
+
+footer{
+    height: 13.1vh;
+}
