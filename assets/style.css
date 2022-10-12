@@ -10,6 +10,12 @@
     height: 20vh;
 }
 
+
+main{
+    min-height: 60vh;
+    width: 100%;
+}
+
 .contenedorHeader h1{
     color:white;
 }
