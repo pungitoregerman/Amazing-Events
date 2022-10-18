@@ -26,7 +26,6 @@ categories.forEach(function (cat) {
 if(containerHomeCards){
    let checkbox = document.getElementById('container-category')
    arrayEvents.forEach(events => addCards(events,containerHomeCards))
-  
     /* BOTON BUSQUEDA */
   const buttonSearch = document.getElementById('button-search')
   buttonSearch.addEventListener('click', () =>{
@@ -35,23 +34,19 @@ if(containerHomeCards){
   filterText(arrayEvents,inputSearch,containerHomeCards)
   })
  /*FIN BOTON BUSQUEDA */
-
-  /* CHECKBOX FILTER */
-
-  /* FIN CHECKBOX */
 }
 if(containerUpcomingEventsCards){
   const checkbox = document.getElementById('container-category')
                   arrayEventsUpComing.forEach(events => addCards(events,containerUpcomingEventsCards))
 
-            /* BOTON BUSQUEDA */
-            const buttonSearch = document.getElementById('button-search')
-            buttonSearch.addEventListener('click', () =>{
-            const inputSearch = document.getElementById('input-search').value
-            console.log(inputSearch)
-            filterText(arrayEventsUpComing,inputSearch,containerUpcomingEventsCards)
-            })
-           /* FIN BOTON BUSQUEDA */
+  /* BOTON BUSQUEDA */
+  const buttonSearch = document.getElementById('button-search')
+  buttonSearch.addEventListener('click', () =>{
+  const inputSearch = document.getElementById('input-search').value
+  console.log(inputSearch)
+  filterText(arrayEventsUpComing,inputSearch,containerUpcomingEventsCards)
+  })
+  /* FIN BOTON BUSQUEDA */
  
 }
 if(containerPastEventsCards){
@@ -61,6 +56,7 @@ if(containerPastEventsCards){
      /* BOTON BUSQUEDA */
      const buttonSearch = document.getElementById('button-search')
      buttonSearch.addEventListener('click', () =>{
+      
      const inputSearch = document.getElementById('input-search').value
      console.log(inputSearch)
      filterText(arrayEventsPast,inputSearch,containerPastEventsCards)
@@ -85,7 +81,7 @@ function addCards(dataArray,containerCards){
           <p>Price: ${dataArray.price}</p>
           </div>
           <div class="col-6">
-          <a href="#" class="btn btn-primary bg-button-main">More details</a>
+          <a href="./details.html?events=${dataArray._id}" class="btn btn-primary bg-button-main">More details</a>
           </div>
       </div> 
       </div>
@@ -98,88 +94,61 @@ function updateArray(container) {
 }  
 
 function filterText(arrayEvents,texto,container){
-  let array = arrayEvents.filter(e =>e.name.toLowerCase().includes(texto.toLowerCase()))
+  let arrayFiltrado = arrayEvents.filter(e =>e.name.toLowerCase().includes(texto.toLowerCase()))
   if(texto === ' '){
     updateArray(container)
      arrayEvents.forEach(e=> addCards(e,container))
      return arrayEvents
   }else{
     updateArray(container)
-    array.forEach(e=> addCards(e,container))
-    return array
+    arrayFiltrado.forEach(e=> addCards(e,container))
+    return arrayFiltrado
   }
 }
 
-function filterCheckBox(arrayEvents){
-  let checkboxsInputs = document.querySelectorAll('input[type="checkbox"]')
+function filterCheckBox(arrayEvents,container){
+  let checkboxsInputs = document.querySelectorAll('input')
   let arrayCheckboxs = Array.from(checkboxsInputs)
-  let checkeds = arrayCheckboxs.filter(e=> e.checked)
-  let checkedTrue = checkeds.map(e=> e.value)
-  console.log(checkedTrue)
-  if(checkedTrue.length > 0){
-    let arrayChecksChange = arrayEvents.filter(e=> checkedTrue.includes(e.category))
+  let arrayCheckeds = arrayCheckboxs.filter(e=> e.checked)
+                                .map(e=> e.value)
+  console.log(arrayCheckeds)
+  if(arrayCheckeds.length > 0){
+    let arrayChecksChange = arrayEvents.filter(e=> arrayCheckeds.includes(e.category))
+    updateArray(container)
     return arrayChecksChange
   }
+  updateArray(container)
   return arrayEvents
 }
 
 
-/* /* FILTRO CHECKBOX */
- checkbox.addEventListener('change', (e) => {
+/* FILTRO CHECKBOX */
+  checkbox.addEventListener('change', (e) => {
   if(containerHomeCards){
-    const inputSearch = document.getElementById('input-search').value
-    let arraysCategorias = filterCheckBox(arrayEvents)
-    //let arrayText = filterText(arrayEventsPast,inputSearch,containerHomeCards);
-    updateArray(containerHomeCards)
+    let arraysCategorias = filterCheckBox(arrayEvents,containerHomeCards)
     arraysCategorias.forEach(e=> addCards(e,containerHomeCards))
-   // arrayText.forEach(e=> addCards(e,containerHomeCards))
   }
   if(containerUpcomingEventsCards){
-    let arraysCategorias = filterCheckBox(arrayEventsUpComing)
-    updateArray(containerUpcomingEventsCards)
-  arraysCategorias.forEach(e=> addCards(e,containerUpcomingEventsCards))
+    let arraysCategorias = filterCheckBox(arrayEventsUpComing,containerUpcomingEventsCards)
+    arraysCategorias.forEach(e=> addCards(e,containerUpcomingEventsCards))
   }
   if(containerPastEventsCards){
-    const inputSearch = document.getElementById('input-search').value
-    let arraysCategorias = filterCheckBox(arrayEventsPast)
-  
-    updateArray(containerPastEventsCards)
+    let arraysCategorias = filterCheckBox(arrayEventsPast,containerPastEventsCards)
     arraysCategorias.forEach(e=> addCards(e,containerPastEventsCards))
   }
-}) 
+})  
 
-/*  checkbox.addEventListener('change', (e) => {
-  let  value = e.target.value
-  let  checked = e.target.checked
-  const inputSearch = document.getElementById('input-search').value
-
-  if(checked){
-    updateArray(containerHomeCards)
-    arrayEvents.filter(events => events.category === value)
-               .forEach(events => addCards(events,containerHomeCards))
-  filterText(e,inputSearch,containerHomeCards)
-  }else{
-    updateArray(containerHomeCards)
-    arrayEvents.forEach(events => addCards(events,containerHomeCards))
-  }
- 
-}) 
- */
-
-/*    
-const buttonSearch = document.getElementById('button-search')
-buttonSearch.addEventListener('click', (element) =>{
-const inputSearch = document.getElementById('input-search').value
-console.log(inputSearch)
-updateArray(containerPastEventsCards)
-
-if(inputSearch === ' '){
- updateArray(containerPastEventsCards)
- arrayEvents.filter(events => events.date < dateOfEvents)
-.forEach(events => addCards(events,containerPastEventsCards))
-}else{
- updateArray(containerPastEventsCards)
- arrayEvents.filter(events => events.date < dateOfEvents && events.name.toLowerCase().includes(inputSearch.toLowerCase()))
- .forEach(events => addCards(events,containerPastEventsCards))  
+/*
+function toPrintDetails (e) {
+  document.querySelector("#events").innerHTML =
+      `
+          <article class="d-flex flex-column justify-content-center align-items-center w-75 articleDetail" id="event${e.id}">
+              <h3 class="d-flex justify-content-center align-items-center cardDetail mt-1 mb-1 w-100">${e.name}</h3>
+              <img src="${e.image}" class="w-100">
+              <p class="d-flex justify-content-center align-items-center cardDetail mt-1 mb-1 w-100">${e.category}</p>
+              <p class="d-flex justify-content-center align-items-center cardDetail mt-1 mb-1 w-100">Lugar: ${e.place} - Fecha: ${(new Date(e.date)).getDate()+1}/${(new Date(e.date)).getMonth()+1}/${(new Date(e.date)).getFullYear()}</p>
+              <p class="d-flex justify-content-center align-items-center cardDetail mt-1 mb-1 w-100">Capacidad: ${e.capacity} - Precio: ${e.price}</p>
+          </article>
+      `
 }
-}) */
+ */

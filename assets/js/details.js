@@ -1,18 +1,13 @@
 let containerDetailsCards = document.getElementById("container-cards-details");
 
-let dateOfEvents;
-let arrayEvents= [];
-
 dateOfEvents = data.currentDate;
 arrayEvents = data.events;
 
-let arrayEventsDetailsAssistance = arrayEvents.filter(e=> e.assistance)
-                                              .forEach(events => addCardsDetailsAssistance(events,containerDetailsCards))
+let arrayEventsDetailsAssistance = arrayEvents.filter(e=> e.assistance)                                            
+let arrayEventsDetailsEstimate = arrayEvents.filter(e=> e.estimate) 
+                    
 
-                                             
-let arrayEventsDetailsEstimate = arrayEvents.filter(e=> e.estimate)
-                    .forEach(events =>  addCardsDetailsEstimate(events,containerDetailsCards));
-
+ 
 function addCardsDetailsAssistance(arrayEvents,container){
   let div = document.createElement("div");
     div.className = "container p-5";
@@ -66,4 +61,24 @@ function addCardsDetailsEstimate(arrayEvents,container){
       `
       container.appendChild(div);
 }
+
+function getEvents() {
+  console.log(location) 
+    console.log(location.search)
+  console.log(location.search.slice(8))
+  let id = Number(location.search.slice(8))
+  //console.log(data)
+  let evento = arrayEvents.filter(evento => evento._id === id); 
+  evento = evento[0]
+  if(evento.assistance){
+    addCardsDetailsAssistance(evento,containerDetailsCards)
+  }
+  else{
+    addCardsDetailsEstimate(evento,containerDetailsCards)
+  }
+   
+}
+
+getEvents()
+
 
