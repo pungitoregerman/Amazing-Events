@@ -2,7 +2,7 @@ let data ={
   "currentDate": "2022-01-01",
   "events": [
     {
-      id: 1,
+      _id: 1,
       "image":"https://amazingeventsapi.herokuapp.com/api/img/Feriadecomidas7.jpg",
       "name":"Collectivities Party",
       "date":"2021-12-12",

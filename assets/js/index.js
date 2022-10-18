@@ -69,14 +69,14 @@ if(containerPastEventsCards){
 
 function addCards(dataArray,containerCards){
     let div = document.createElement("div");
-    div.className = "row gap-3 justify-content-evenly";
+    div.className = "row gap-3";
     div.innerHTML += `
-      <div class="card mb-2 p-2" style="width: 18rem;">
+      <div class="card mb-2 p-2 d-flex justify-content-between" style="width: 18rem;">
       <img src="${dataArray.image}" class="card-img-top" alt="${dataArray.name}">
       <div class="card-body">
       <h5 class="card-title">${dataArray.name}</h5>
       <p class="card-text">${dataArray.description}</p>
-      <div class="d-flex  flex-direction-row ">
+      <div class="d-flex  flex-direction-row">
           <div class="col-6">
           <p>Price: ${dataArray.price}</p>
           </div>
@@ -137,18 +137,3 @@ function filterCheckBox(arrayEvents,container){
     arraysCategorias.forEach(e=> addCards(e,containerPastEventsCards))
   }
 })  
-
-/*
-function toPrintDetails (e) {
-  document.querySelector("#events").innerHTML =
-      `
-          <article class="d-flex flex-column justify-content-center align-items-center w-75 articleDetail" id="event${e.id}">
-              <h3 class="d-flex justify-content-center align-items-center cardDetail mt-1 mb-1 w-100">${e.name}</h3>
-              <img src="${e.image}" class="w-100">
-              <p class="d-flex justify-content-center align-items-center cardDetail mt-1 mb-1 w-100">${e.category}</p>
-              <p class="d-flex justify-content-center align-items-center cardDetail mt-1 mb-1 w-100">Lugar: ${e.place} - Fecha: ${(new Date(e.date)).getDate()+1}/${(new Date(e.date)).getMonth()+1}/${(new Date(e.date)).getFullYear()}</p>
-              <p class="d-flex justify-content-center align-items-center cardDetail mt-1 mb-1 w-100">Capacidad: ${e.capacity} - Precio: ${e.price}</p>
-          </article>
-      `
-}
- */

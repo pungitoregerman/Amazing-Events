@@ -6,7 +6,8 @@ arrayEvents = data.events;
 let arrayEventsDetailsAssistance = arrayEvents.filter(e=> e.assistance)                                            
 let arrayEventsDetailsEstimate = arrayEvents.filter(e=> e.estimate) 
                     
-
+console.log(arrayEventsDetailsAssistance)
+console.log(arrayEventsDetailsEstimate)
  
 function addCardsDetailsAssistance(arrayEvents,container){
   let div = document.createElement("div");
@@ -39,7 +40,7 @@ function addCardsDetailsEstimate(arrayEvents,container){
   let div = document.createElement("div");
     div.className = "container p-5";
     div.innerHTML += `
-      <div class="card mb-3" style="max-width: 800px;">
+      <div class="card mb-3" style="max-width: 650px;">
       <div class="row g-0">
               <div class="col-md-4">
                 <img src="${arrayEvents.image}" class="img-fluid rounded-start" alt="foodFair">
@@ -64,10 +65,9 @@ function addCardsDetailsEstimate(arrayEvents,container){
 
 function getEvents() {
   console.log(location) 
-    console.log(location.search)
+  console.log(location.search)
   console.log(location.search.slice(8))
   let id = Number(location.search.slice(8))
-  //console.log(data)
   let evento = arrayEvents.filter(evento => evento._id === id); 
   evento = evento[0]
   if(evento.assistance){
@@ -76,9 +76,7 @@ function getEvents() {
   else{
     addCardsDetailsEstimate(evento,containerDetailsCards)
   }
-   
 }
-
 getEvents()
 
 
