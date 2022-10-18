@@ -6,14 +6,6 @@ let arrayEvents = data.events;
 let arrayEventsUpcomingEvents = arrayEvents.filter( events => events.date > dateOfEvents)
                                            .forEach(events => addCards(events,containerUpcomingEventsCards))
 
-// Separar las galerias
-// separar los arrays 
-// con funcion , se ejecuta con cada uno 
-// concicional , si la galeria index es true , if (gallery){
-   //  addCards(events,gallery)
-//}
-
-
 function addCards(dataArray,containerCards){
     let div = document.createElement("div");
     div.className = "row gap-3 justify-content-evenly";
@@ -35,3 +27,21 @@ function addCards(dataArray,containerCards){
       `
       containerCards.appendChild(div);
   } 
+  
+/* Agregar categorias checkboxs dinamicamente */
+const categories = new Set(arrayEvents.map((events) => events.category) 
+                                      .sort())
+const checkbox = document.getElementById('js-container-category')
+categories.forEach(function (cat) {
+    checkbox.innerHTML += `<input id="categoria" class="valuesCheckbox gap-3" type="checkbox" value="${cat}"> ${cat} </label> `
+})
+/* FIN gregar categorias checkboxs dinamicamente */
+
+/* FILTRO CHECKBOX */
+
+
+/* FILTRO BOTON */
+
+const buttonSearch = document.getElementById('button-search')
+
+  

@@ -7,6 +7,19 @@ let arrayEventsPast = arrayEvents.filter((events) => events.date < dateOfEvents)
                                 .forEach(events => addCards(events,containerPastEventsCards))
 console.log(arrayEventsPast);
 
+/* Agregar categorias checkboxs dinamicamente */
+const categories = new Set(arrayEvents.map((events) => events.category) 
+                                      .sort())
+//recorre el array y busca la propiedad de categorias
+//ordenar alfabeticamente
+//Crea un objeto con las categorias y deja 1 solo si tiene duplicado
+const checkbox = document.getElementById('js-container-category')
+// forEach hago que itere categorys y por cada categoria la agregue atravez de un input  en el container checkbox
+categories.forEach(function (cat) {
+    checkbox.innerHTML += `<input id="categoria" class="valuesCheckbox gap-3" type="checkbox" value="${cat}"> ${cat} </label> `
+})
+/* FIN gregar categorias checkboxs dinamicamente */
+
 function addCards(dataArray,containerCards){
     let div = document.createElement("div");
     div.className = "row gap-3 justify-content-evenly";

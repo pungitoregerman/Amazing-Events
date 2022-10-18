@@ -6,12 +6,12 @@ let arrayEvents= [];
 dateOfEvents = data.currentDate;
 arrayEvents = data.events;
 
-let arrayEventsDetailsAssistance = arrayEvents.filter( events => events.assistance !== undefined)
-                                           .forEach(events => addCardsDetailsAssistance(events,containerDetailsCards))
+let arrayEventsDetailsAssistance = arrayEvents.filter(e=> e.assistance)
+                                              .forEach(events => addCardsDetailsAssistance(events,containerDetailsCards))
 
-
-let arrayEventsDetailsEstimate= arrayEvents.filter( events => events.estimate !== undefined)
-                                           .forEach(events => addCardsDetailsEstimate(events,containerDetailsCards))
+                                             
+let arrayEventsDetailsEstimate = arrayEvents.filter(e=> e.estimate)
+                    .forEach(events =>  addCardsDetailsEstimate(events,containerDetailsCards));
 
 function addCardsDetailsAssistance(arrayEvents,container){
   let div = document.createElement("div");
@@ -25,7 +25,6 @@ function addCardsDetailsAssistance(arrayEvents,container){
               <div class="col-md-8">
                 <div class="card-body">
                   <h5 class="card-title">${arrayEvents.name}</h5>
-                  <p class="card-text">id: ${arrayEvents.id}</p>
                   <p class="card-text">date: ${arrayEvents.date}</p>
                   <p class="card-text">description: ${arrayEvents.description}</p>
                   <p class="card-text">category: ${arrayEvents.category}</p>
@@ -53,7 +52,6 @@ function addCardsDetailsEstimate(arrayEvents,container){
               <div class="col-md-8">
                 <div class="card-body">
                   <h5 class="card-title">${arrayEvents.name}</h5>
-                  <p class="card-text">id: ${arrayEvents.id}</p>
                   <p class="card-text">date: ${arrayEvents.date}</p>
                   <p class="card-text">description: ${arrayEvents.description}</p>
                   <p class="card-text">category: ${arrayEvents.category}</p>

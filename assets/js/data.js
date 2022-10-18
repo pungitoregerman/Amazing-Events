@@ -80,8 +80,8 @@ let data ={
       "date":"2022-01-22",
       "description":"The only concert of the most emblematic band in the world.",
       "category":"Music Concert",
-      "place":"Room A"
-      ,"capacity":138000,
+      "place":"Room A",
+      "capacity":138000,
       "estimate":138000,
       "price":150
     },
