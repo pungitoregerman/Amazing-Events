@@ -63,7 +63,7 @@ function addCardsDetailsEstimate(arrayEvents,container){
       container.appendChild(div);
 }
 
-function getEvents() {
+ function getEvents() {
   console.log(location) 
   console.log(location.search)
   console.log(location.search.slice(8))
@@ -78,5 +78,4 @@ function getEvents() {
   }
 }
 getEvents()
-
-
+ 

@@ -26,12 +26,14 @@ categories.forEach(function (cat) {
 if(containerHomeCards){
    let checkbox = document.getElementById('container-category')
    arrayEvents.forEach(events => addCards(events,containerHomeCards))
-    /* BOTON BUSQUEDA */
+  
+   /* EMPIEZA BOTON BUSQUEDA */
   const buttonSearch = document.getElementById('button-search')
   buttonSearch.addEventListener('click', () =>{
   const inputSearch = document.getElementById('input-search').value
   console.log(inputSearch)
   filterText(arrayEvents,inputSearch,containerHomeCards)
+  
   })
  /*FIN BOTON BUSQUEDA */
 }
@@ -44,10 +46,10 @@ if(containerUpcomingEventsCards){
   buttonSearch.addEventListener('click', () =>{
   const inputSearch = document.getElementById('input-search').value
   console.log(inputSearch)
-  filterText(arrayEventsUpComing,inputSearch,containerUpcomingEventsCards)
+  filterText(containerUpcomingEventsCards,inputSearch,containerUpcomingEventsCards)
+  
   })
   /* FIN BOTON BUSQUEDA */
- 
 }
 if(containerPastEventsCards){
   const checkbox = document.getElementById('container-category')
@@ -56,12 +58,10 @@ if(containerPastEventsCards){
      /* BOTON BUSQUEDA */
      const buttonSearch = document.getElementById('button-search')
      buttonSearch.addEventListener('click', () =>{
-      
      const inputSearch = document.getElementById('input-search').value
      console.log(inputSearch)
      filterText(arrayEventsPast,inputSearch,containerPastEventsCards)
      })
-  
    /* FIN BOTON BUSQUEDA */
 
    
@@ -95,8 +95,8 @@ function updateArray(container) {
 
 function filterText(arrayEvents,texto,container){
   let arrayFiltrado = arrayEvents.filter(e =>e.name.toLowerCase().includes(texto.toLowerCase()))
-  if(texto === ' '){
-    updateArray(container)
+  if(texto === ''){
+     updateArray(container)
      arrayEvents.forEach(e=> addCards(e,container))
      return arrayEvents
   }else{
@@ -107,10 +107,10 @@ function filterText(arrayEvents,texto,container){
 }
 
 function filterCheckBox(arrayEvents,container){
-  let checkboxsInputs = document.querySelectorAll('input')
-  let arrayCheckboxs = Array.from(checkboxsInputs)
-  let arrayCheckeds = arrayCheckboxs.filter(e=> e.checked)
-                                .map(e=> e.value)
+  let checkboxInHtml = document.querySelectorAll('input[type="checkbox"]')
+  let arrayCheckboxsAll = Array.from(checkboxInHtml)
+  let arrayCheckeds = arrayCheckboxsAll.filter(e=> e.checked)
+                                       .map(e=> e.value)
   console.log(arrayCheckeds)
   if(arrayCheckeds.length > 0){
     let arrayChecksChange = arrayEvents.filter(e=> arrayCheckeds.includes(e.category))
@@ -120,7 +120,6 @@ function filterCheckBox(arrayEvents,container){
   updateArray(container)
   return arrayEvents
 }
-
 
 /* FILTRO CHECKBOX */
   checkbox.addEventListener('change', (e) => {
@@ -137,3 +136,4 @@ function filterCheckBox(arrayEvents,container){
     arraysCategorias.forEach(e=> addCards(e,containerPastEventsCards))
   }
 })  
+
