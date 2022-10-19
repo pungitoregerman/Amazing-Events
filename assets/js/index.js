@@ -43,12 +43,11 @@ if(containerUpcomingEventsCards){
 
   /* BOTON BUSQUEDA */
   const buttonSearch = document.getElementById('button-search')
-  buttonSearch.addEventListener('click', () =>{
-  const inputSearch = document.getElementById('input-search').value
-  console.log(inputSearch)
-  filterText(containerUpcomingEventsCards,inputSearch,containerUpcomingEventsCards)
-  
-  })
+     buttonSearch.addEventListener('click', () =>{
+     const inputSearch = document.getElementById('input-search').value
+     console.log(inputSearch)
+     filterText(arrayEventsUpComing,inputSearch,containerUpcomingEventsCards)
+     })
   /* FIN BOTON BUSQUEDA */
 }
 if(containerPastEventsCards){
