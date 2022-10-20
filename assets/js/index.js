@@ -11,6 +11,9 @@ async function apiAmazing(){
     let date = data.date
     console.log(events)
     
+    const categories = new Set(events.map((events) => events.category) 
+                                      .sort())
+    addCategories(categories,checkbox)
     if(containerHomeCards){
       events.forEach(events => addCards(events,containerHomeCards)) 
    } 
@@ -28,9 +31,7 @@ async function apiAmazing(){
 }
 apiAmazing()
 
-/* const categories = new Set(arrayEvents.map((events) => events.category) 
-                                      .sort())
-   */
+
 function addCards(dataArray,containerCards){
   let div = document.createElement("div");
   div.className = "row gap-3";
