@@ -2,7 +2,7 @@ let data ={
   "currentDate": "2022-01-01",
   "events": [
     {
-      id: 1,
+      _id: 1,
       "image":"https://amazingeventsapi.herokuapp.com/api/img/Feriadecomidas7.jpg",
       "name":"Collectivities Party",
       "date":"2021-12-12",
@@ -80,8 +80,8 @@ let data ={
       "date":"2022-01-22",
       "description":"The only concert of the most emblematic band in the world.",
       "category":"Music Concert",
-      "place":"Room A"
-      ,"capacity":138000,
+      "place":"Room A",
+      "capacity":138000,
       "estimate":138000,
       "price":150
     },
