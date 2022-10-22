@@ -2,110 +2,75 @@ const containerHomeCards = document.getElementById("container-cards-home");
 const containerUpcomingEventsCards = document.getElementById("container-cards-upcomingEvents");
 const containerPastEventsCards = document.getElementById("container-cards-pastEvents");
 const checkbox = document.getElementById('js-container-category') 
+const search = document.getElementById('input-search')
 
-async function apiAmazing(){
+async function apiAmazingEvents(){
   try{
     let data = await fetch('https://mind-hub.up.railway.app/amazing')    
     data = await data.json()
     let events = data.events
     let date = data.date
-    console.log(events)
+    let eventsPast = events.filter(e=> e.date < date)
+    let eventsComing = events.filter(e=> e.date > date)
     
-    const categories = new Set(events.map((events) => events.category) 
-                                      .sort())
-    addCategories(categories,checkbox)
+ 
+    crearCheckboxs(events,checkbox);
     if(containerHomeCards){
-      events.forEach(events => addCards(events,containerHomeCards)) 
-   } 
-   if(containerUpcomingEventsCards){
-    events.filter(e=> e.date > date)
-                                .forEach(events => addCards(events,containerUpcomingEventsCards))
-   } 
-   if(containerPastEventsCards){
-    events.filter(e=> e.date < date)
-          .forEach(events => addCards(events,containerPastEventsCards))
-   } 
+       toPrintCards(events,containerHomeCards)
+    }
+    if(containerUpcomingEventsCards){
+      toPrintCards(eventsComing,containerUpcomingEventsCards)
+    }
+    if(containerPastEventsCards){
+      toPrintCards(eventsPast,containerPastEventsCards) 
+    } 
   }catch(error){
     console.log('Hubo un error al consumir la API')
   }
 }
-apiAmazing()
+apiAmazingEvents()
 
 
-function addCards(dataArray,containerCards){
-  let div = document.createElement("div");
-  div.className = "row gap-3";
-  div.innerHTML += `
-    <div class="card mb-2 p-2 d-flex justify-content-between" style="width: 18rem;">
-    <img src="${dataArray.image}" class="card-img-top" alt="${dataArray.name}">
-    <div class="card-body">
-    <h5 class="card-title">${dataArray.name}</h5>
-    <p class="card-text">${dataArray.description}</p>
-    <div class="d-flex  flex-direction-row">
-        <div class="col-6">
-        <p>Price: ${dataArray.price}</p>
-        </div>
-        <div class="col-6">
-        <a href="./details.html?events=${dataArray._id}" class="btn btn-primary bg-button-main">More details</a>
-        </div>
-    </div> 
-    </div>
-    `
-    containerCards.appendChild(div);
-} 
-
-function updateArray(container) {
-  container.innerHTML = ''
-}  
-
-function filterText(arrayEvents,texto,container){
-let arrayFiltrado = arrayEvents.filter(e =>e.name.toLowerCase().includes(texto.toLowerCase()))
-if(texto === ''){
-   updateArray(container)
-   arrayEvents.forEach(e=> addCards(e,container))
-}else{
-  updateArray(container)
-  arrayFiltrado.forEach(e=> addCards(e,container))
-}
-}
-
-function filterCheckBox(arrayEvents,container){
-let checkboxInHtml = document.querySelectorAll('input[type="checkbox"]')
-let arrayCheckboxsAll = Array.from(checkboxInHtml)
-let arrayCheckeds = arrayCheckboxsAll.filter(e=> e.checked)
-                                     .map(e=> e.value)
-console.log(arrayCheckeds)
-if(arrayCheckeds.length > 0){
-  let arrayChecksChange = arrayEvents.filter(e=> arrayCheckeds.includes(e.category))
-  updateArray(container)
-  return arrayChecksChange
-}
-updateArray(container)
-return arrayEvents
-}
-
-function addCategories(array,checkbox){
-  array.forEach(function (cat) {
-    checkbox.innerHTML += `<input id="categoria" class="valuesCheckbox gap-3" type="checkbox" value="${cat}"> ${cat} </label> `
+/* FUNCIONES */
+function crearCheckboxs(eventos,contenedor){
+  let fn = eventos => eventos.category
+  let categorias = new Set(eventos.filter(fn).map(fn))
+  categorias.forEach(categoria =>{
+    contenedor.innerHTML +=`<input class="categoria" class="valuesCheckbox gap-3" type="checkbox" value="${categoria}"> ${categoria} </label> `
   })
 }
+function createCard(evento){
+  let div = document.createElement("div");
+    div.classList = "row gap-3";
+    div.innerHTML = `
+      <div class="card mb-2 p-2 d-flex justify-content-between" style="width: 18rem;">
+      <img src="${evento.image}" class="card-img-top" alt="${evento.name}">
+      <div class="card-body">
+      <h5 class="card-title">${evento.name}</h5>
+      <p class="card-text">${evento.description}</p>
+      <div class="d-flex  flex-direction-row">
+          <div class="col-6">
+          <p>Price: ${evento.price}</p>
+          </div>
+          <div class="col-6">
+          <a href="./details.html?events=${evento._id}" class="btn btn-primary bg-button-main">More details</a>
+          </div>
+      </div> 
+      </div>
+      `
+      return div
+}
 
+function toPrintCards(eventos,contenedor){
+  contenedor.innerHTML = ''
+  if(eventos.length > 0) {
+      let fragment = document.createDocumentFragment()
+      eventos.forEach( event => fragment.appendChild(createCard(event) ) )
+      contenedor.appendChild(fragment)
+  }
+}
 /* FIN FUNCIONES */
 
-/* FILTRO CHECKBOX */
-checkbox.addEventListener('change', (e) => {
-if(containerHomeCards){
-  let arraysCategorias = filterCheckBox(arrayEvents,containerHomeCards)
-  arraysCategorias.forEach(e=> addCards(e,containerHomeCards))  
-}
-if(containerUpcomingEventsCards){
-  let arraysCategorias = filterCheckBox(arrayEventsUpComing,containerUpcomingEventsCards)
-  arraysCategorias.forEach(e=> addCards(e,containerUpcomingEventsCards))
-}
-if(containerPastEventsCards){
-  let arraysCategorias = filterCheckBox(arrayEventsPast,containerPastEventsCards)
-  arraysCategorias.forEach(e=> addCards(e,containerPastEventsCards))
-}
-})  
+
 
 
