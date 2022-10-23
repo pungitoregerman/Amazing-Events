@@ -1,5 +1,27 @@
 let containerDetailsCards = document.getElementById("container-cards-details");
 
+async function apiAmazingDetails(){
+  try{
+    let id = location.search.slice(8)
+    let data = await fetch(`https://mind-hub.up.railway.app/amazing/`)    
+    data = await data.json() 
+    let eventos = data.events
+    eventos.filter(e=> {
+      if(e.id === id && e.assistance){
+        addCardsDetailsAssistance(e,containerDetailsCards)
+      }
+      if(e.id === id && e.estimate){
+        addCardsDetailsEstimate(e,containerDetailsCards)
+      }
+    })
+    /* getEvents(eventos,id) */
+  }
+  catch(error){
+  console.log('Hubo un error al consumir la API')
+}
+}
+apiAmazingDetails()
+
 function addCardsDetailsAssistance(arrayEvents,container){
   let div = document.createElement("div");
     div.className = "container p-5";
@@ -7,7 +29,7 @@ function addCardsDetailsAssistance(arrayEvents,container){
       <div class="card mb-3" style="max-width: 800px;">
       <div class="row g-0">
               <div class="col-md-4">
-                <img src="${arrayEvents.image}" class="img-fluid rounded-start" alt="foodFair">
+                <img src="${arrayEvents.image}" class="img-fluid rounded-start" alt="${arrayEvents.name}">
               </div>
               <div class="col-md-8">
                 <div class="card-body">
@@ -34,7 +56,7 @@ function addCardsDetailsEstimate(arrayEvents,container){
       <div class="card mb-3" style="max-width: 650px;">
       <div class="row g-0">
               <div class="col-md-4">
-                <img src="${arrayEvents.image}" class="img-fluid rounded-start" alt="foodFair">
+                <img src="${arrayEvents.image}" class="img-fluid rounded-start" alt="${arrayEvents.name}">
               </div>
               <div class="col-md-8">
                 <div class="card-body">
@@ -54,20 +76,4 @@ function addCardsDetailsEstimate(arrayEvents,container){
       container.appendChild(div);
 }
 
-/*   function getEvents() {
-  console.log(location) 
-  console.log(location.search)
-  console.log(location.search.slice(8))
-  let id = Number(location.search.slice(8))
-  let evento = arrayEvents.filter(evento => evento._id === id); 
-  evento = evento[0]
-  if(evento.assistance){
-    addCardsDetailsAssistance(evento,containerDetailsCards)
-  }
-  else{
-    addCardsDetailsEstimate(evento,containerDetailsCards)
-  }
-}
-getEvents()
-  
- */
+

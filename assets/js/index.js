@@ -3,16 +3,19 @@ const containerUpcomingEventsCards = document.getElementById("container-cards-up
 const containerPastEventsCards = document.getElementById("container-cards-pastEvents");
 const checkbox = document.getElementById('js-container-category') 
 const search = document.getElementById('input-search')
+let events;
+let date;
+let eventsPast;
+let eventsComing;
 
 async function apiAmazingEvents(){
   try{
     let data = await fetch('https://mind-hub.up.railway.app/amazing')    
     data = await data.json()
-    let events = data.events
-    let date = data.date
-    let eventsPast = events.filter(e=> e.date < date)
-    let eventsComing = events.filter(e=> e.date > date)
-    
+    events = data.events
+    date = data.date
+   eventsPast = events.filter(e=> e.date < date)
+    eventsComing = events.filter(e=> e.date > date)
  
     crearCheckboxs(events,checkbox);
     if(containerHomeCards){
@@ -59,7 +62,7 @@ function createCard(evento){
           <p>Price: ${evento.price}</p>
           </div>
           <div class="col-6">
-          <a href="./details.html?events=${evento._id}" class="btn btn-primary bg-button-main">More details</a>
+          <a href="./details.html?events=${evento.id}" class="btn btn-primary bg-button-main">More details</a>
           </div>
       </div> 
       </div>
@@ -73,25 +76,22 @@ function toPrintCards(eventos,contenedor){
       let fragment = document.createDocumentFragment()
       eventos.forEach( event => fragment.appendChild(createCard(event) ) )
       contenedor.appendChild(fragment)
+  }else{
+    contenedor.innerHTML = '<h2> NO HAY COINCIDENCIA CON LOS EVENTOS ESTABLECIDOS.</h2>'
+    contenedor.innerHTML += '<h3> REVISE EL NOMBRE INGRESADO.</h3>'
   }
 }
 
 function filtrar(array,container){
-  let checkboxInHtml = document.querySelectorAll('input[type="checkbox"]')
-  let arrayCheckboxsAll = Array.from(checkboxInHtml)
-  let checked = arrayCheckboxsAll.filter(e=> e.checked)
-                                  .map(e=> e.value)
+  let checked = [...document.querySelectorAll( 'input[type="checkbox"]:checked' )].map( ele => ele.value)
   let filtradosPorCategoria = array.filter( e => checked.includes(e.category))
-  let filtradosPorSearch = filtradosPorCategoria.filter(event => event.name.toLowerCase().includes(search.value.toLowerCase()))
+  let filtradosPorSearch = filtradosPorCategoria.filter(e=>e.name.toLowerCase().includes(search.value.toLowerCase()))
+  toPrintCards(filtradosPorSearch,container)
 
-  if(filtradosPorSearch.length > 0){
-    toPrintCards(filtradosPorSearch,container)
-  }else{
+  if(checked.length === 0){
     toPrintCards(array,container)
-  } 
+  }
 }
-/* FIN FUNCIONES */
-
 
 
 
