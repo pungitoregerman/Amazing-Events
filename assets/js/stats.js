@@ -26,6 +26,7 @@ async function staticsAmazing(){
       let mayorCapacidad = ordenadosPorCapacidad[0];
       tableOne(tableOneHtml,mayorAsistencia,menorAsistencia,mayorCapacidad); 
       /* FIN TABLA */
+      
       /* SEGUNDA TABLA */
       /* FIN TABLA */
 

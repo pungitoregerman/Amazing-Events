@@ -17,12 +17,18 @@ async function apiAmazingEvents(){
     crearCheckboxs(events,checkbox);
     if(containerHomeCards){
        toPrintCards(events,containerHomeCards)
+       search.addEventListener('keyup',e=>filtrar(events,containerHomeCards))
+      checkbox.addEventListener('change',e=> filtrar(events,containerHomeCards))
     }
     if(containerUpcomingEventsCards){
       toPrintCards(eventsComing,containerUpcomingEventsCards)
+      search.addEventListener('keyup',e=>filtrar(eventsComing,containerUpcomingEventsCards))
+      checkbox.addEventListener('change',e=> filtrar(eventsComing,containerUpcomingEventsCards))
     }
     if(containerPastEventsCards){
       toPrintCards(eventsPast,containerPastEventsCards) 
+      search.addEventListener('keyup',e=>filtrar(eventsPast,containerPastEventsCards))
+      checkbox.addEventListener('change',e=> filtrar(eventsPast,containerPastEventsCards))
     } 
   }catch(error){
     console.log('Hubo un error al consumir la API')
@@ -68,6 +74,21 @@ function toPrintCards(eventos,contenedor){
       eventos.forEach( event => fragment.appendChild(createCard(event) ) )
       contenedor.appendChild(fragment)
   }
+}
+
+function filtrar(array,container){
+  let checkboxInHtml = document.querySelectorAll('input[type="checkbox"]')
+  let arrayCheckboxsAll = Array.from(checkboxInHtml)
+  let checked = arrayCheckboxsAll.filter(e=> e.checked)
+                                  .map(e=> e.value)
+  let filtradosPorCategoria = array.filter( e => checked.includes(e.category))
+  let filtradosPorSearch = filtradosPorCategoria.filter(event => event.name.toLowerCase().includes(search.value.toLowerCase()))
+
+  if(filtradosPorSearch.length > 0){
+    toPrintCards(filtradosPorSearch,container)
+  }else{
+    toPrintCards(array,container)
+  } 
 }
 /* FIN FUNCIONES */
 
