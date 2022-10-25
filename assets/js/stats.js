@@ -1,42 +1,111 @@
-let tableOneHtml = document.getElementById("trOne");
-let tableTwoHtml = document.getElementById("UpcomingStats");
+let tableOne = document.getElementById("tableOne");
+let tableTwo = document.getElementById("tableTwo")
+let tableThree = document.getElementById("tableThree")
+let data;
+let events;
+let date;
+let eventsPast;
+let eventsComing;
 
 async function staticsAmazing() {
   try {
-    let data = await fetch("https://mind-hub.up.railway.app/amazing");
+    data = await fetch('https://mh-amazing.herokuapp.com/amazing');
     data = await data.json();
-    let events = data.events;
-    let date = data.date;
-    let eventsPast = events.filter((e) => e.date < date);
-    let eventsComing = events.filter((e) => e.date > date);
-
-    console.log(events);
-
-    let categories = new Set(events.map((events) => events.category).sort());
-    categories = Array.from(categories);
-    console.log(categories);
-
+    events = data.events;
+    date = data.date;
+    eventsPast = events.filter((e) => e.date < date);
+    eventsComing = events.filter((e) => e.date > date); 
+    
     /* PRIMER TABLA */
-    let ordenadosPorCapacidad = [...events];
-    let asistencia = [...eventsPast];
-    ordenadosPorCapacidad.sort((evento1, evento2) => evento2.capacity - evento1.capacity);
-    asistencia.sort((evento1, evento2) =>(100 * evento2.assistance)/evento2.capacity- (100*evento1.assistance)/evento1.capacity);
-    let mayorAsistencia = asistencia[0];
-    let menorAsistencia = asistencia[asistencia.length - 1];
-    let mayorCapacidad = ordenadosPorCapacidad[0];
-    tableOne(tableOneHtml, mayorAsistencia, menorAsistencia, mayorCapacidad);
+    let mayorAsistencia = calcularMayorAsistencia(eventsPast);
+    let menorAsistencia = calcularMenorAsistencia(eventsPast);
+    let mayorCapacidad = ordenarPorCapacidad(eventsPast);
+    tableCreate(tableOne, mayorAsistencia, menorAsistencia, mayorCapacidad); 
     /* FIN TABLA */
-
-    /* SEGUNDA TABLA */
+    /* SEGUNDA TABLA */  
+    stats(eventsComing,'estimate', tableTwo)  
     /* FIN TABLA */
-  } catch (error) {
+    /* TERCER TABLA */
+    stats(eventsPast,'assistance', tableThree)
+    /* FIN TABLA */
+  }catch (error) {
     console.log("ERROR!");
   }
 }
 staticsAmazing();
 
-function tableOne(tabla, mayorAsistencia, menorAsistencia, mayorCapacity) {
-  tabla.innerHTML += `<td class="border-dark col-3 table-secondary">${mayorAsistencia.name}</td>`;
-  tabla.innerHTML += `<td class="border-dark col-3 table-secondary">${menorAsistencia.name}</td>`;
-  tabla.innerHTML += `<td class="border-dark col-3 table-secondary">${mayorCapacity.name}</td>`;
+/* FUNCIONES TABLA UNO */
+function tableCreate(contenedor,mayorAsistencia, menorAsistencia, mayorCapacidad){
+  contenedor.innerHTML += `
+            <td>${mayorAsistencia.name}</td>
+            <td>${menorAsistencia.name}</td>
+            <td>${mayorCapacidad.name}</td>`
+}
+function calcularMayorAsistencia(array){
+  let asistenciaOrdenada = [...array.sort((evento1, evento2) =>(100 * evento1.assistance)/evento1.capacity - (100*evento2.assistance)/evento2.capacity)];
+  let mayorAsistencia = asistenciaOrdenada[asistenciaOrdenada.length -1];
+  return mayorAsistencia
+}
+function calcularMenorAsistencia(array){
+  let asistenciaOrdenada = [...array.sort((evento1, evento2) =>(100 * evento1.assistance)/evento1.capacity - (100*evento2.assistance)/evento2.capacity)];
+  let menorAsistencia = asistenciaOrdenada[0];
+  return menorAsistencia
+}
+function ordenarPorCapacidad(array){
+  let capacidadOrdenada = [...array.sort((evento1, evento2) => evento1.capacity - evento2.capacity)];
+  let mayorCapacidad = capacidadOrdenada[capacidadOrdenada.length -1]
+  return mayorCapacidad
+}
+/* FIN FUNCIONES TABLA UNO */
+
+/* FUNCION DE TABLA 2 ESTIMATE Y 3 ASSISTANCE */
+function stats(array,property,table)  {
+  array.map(event => {
+    event.ganancia = event[property]  * event.price
+    event.porcentaje = (100 * event[property] / event.capacity)
+})
+
+  let categories = Array.from(new Set(array.map(event => event.category))).sort()
+ 
+  let stats = categories.map(categorie => {
+      let filtrados = array.filter(event => event.category === categorie)
+      return reduceStats(filtrados,property)
+  })
+  addStatsTable(stats,table)
+}
+
+// El método reduce() ejecuta una función reductora sobre cada elemento de un array, devolviendo como resultado un único valor.
+// SI ENTRA UN OBJETO SALE UN OBJETO
+// EL MISMO TIPO QUE ENTRA ES EL MISMO TIPO QUE SALE
+
+function reduceStats (array,property){
+  let StateZero = {
+      category: "",
+      ganancia: 0,
+      capacity: 0,
+      [property]: 0
+  }
+  let stats = array.reduce((element1,element2) => {
+      return {
+          category: element2.category,
+          ganancia: element1.ganancia + element2.ganancia,
+          capacity: element1.capacity + element2.capacity,
+          [property]: element1[property] + element2[property]
+      }
+  }, StateZero)
+  stats.promedio = (100 * stats[property] / stats.capacity).toFixed(0)
+  return stats
+}
+
+
+function addStatsTable(array,tabla){
+  array.forEach(element => {
+      tabla.innerHTML +=
+      `
+    <tr><td >${element.category}</td>
+        <td class="text-center">$${element.ganancia}</td>
+        <td class="text-center">${element.promedio}%</td>     
+    </tr>
+      `
+  })
 }

@@ -7,16 +7,17 @@ let events;
 let date;
 let eventsPast;
 let eventsComing;
+let data
 
 async function apiAmazingEvents(){
   try{
-    let data = await fetch('https://mind-hub.up.railway.app/amazing')    
-    data = await data.json()
-    events = data.events
-    date = data.date
-   eventsPast = events.filter(e=> e.date < date)
-    eventsComing = events.filter(e=> e.date > date)
- 
+      data = await fetch('https://mh-amazing.herokuapp.com/amazing')    
+      data = await data.json()
+      events = data.events
+      date = data.date
+      eventsPast = events.filter(e=> e.date < date)
+      eventsComing = events.filter(e=> e.date > date)
+  
     crearCheckboxs(events,checkbox);
     if(containerHomeCards){
        toPrintCards(events,containerHomeCards)
@@ -74,23 +75,19 @@ function toPrintCards(eventos,contenedor){
   contenedor.innerHTML = ''
   if(eventos.length > 0) {
       let fragment = document.createDocumentFragment()
-      eventos.forEach( event => fragment.appendChild(createCard(event) ) )
+      eventos.forEach( event => fragment.appendChild(createCard(event)))
       contenedor.appendChild(fragment)
   }else{
-    contenedor.innerHTML = '<h2> NO HAY COINCIDENCIA CON LOS EVENTOS ESTABLECIDOS.</h2>'
-    contenedor.innerHTML += '<h3> REVISE EL NOMBRE INGRESADO.</h3>'
+    contenedor.innerHTML = '<h2> NO HAY COINCIDENCIA CON LOS EVENTOS ESTABLECIDOS.<br></h2>'
+    contenedor.innerHTML += '<h4> REVISE EL NOMBRE INGRESADO.</h4>'
   }
 }
 
 function filtrar(array,container){
   let checked = [...document.querySelectorAll( 'input[type="checkbox"]:checked' )].map( ele => ele.value)
-  let filtradosPorCategoria = array.filter( e => checked.includes(e.category))
+  let filtradosPorCategoria = array.filter( e => checked.includes(e.category) || checked.length === 0)
   let filtradosPorSearch = filtradosPorCategoria.filter(e=>e.name.toLowerCase().includes(search.value.toLowerCase()))
   toPrintCards(filtradosPorSearch,container)
-
-  if(checked.length === 0){
-    toPrintCards(array,container)
-  }
 }
 
 
