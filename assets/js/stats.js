@@ -74,9 +74,7 @@ function stats(array,property,table)  {
   addStatsTable(stats,table)
 }
 
-// El método reduce() ejecuta una función reductora sobre cada elemento de un array, devolviendo como resultado un único valor.
-// SI ENTRA UN OBJETO SALE UN OBJETO
-// EL MISMO TIPO QUE ENTRA ES EL MISMO TIPO QUE SALE
+
 
 function reduceStats (array,property){
   let StateZero = {
