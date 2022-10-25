@@ -102,7 +102,7 @@ function addStatsTable(array,tabla){
   array.forEach(element => {
       tabla.innerHTML +=
       `
-    <tr><td >${element.category}</td>
+    <tr><td>${element.category}</td>
         <td class="text-center">$${element.ganancia}</td>
         <td class="text-center">${element.promedio}%</td>     
     </tr>
