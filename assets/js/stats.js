@@ -62,11 +62,10 @@ function ordenarPorCapacidad(array){
 function stats(array,property,table)  {
   array.map(event => {
     event.ganancia = event[property]  * event.price
-    event.porcentaje = (100 * event[property] / event.capacity)
 })
 
   let categories = Array.from(new Set(array.map(event => event.category))).sort()
- 
+
   let stats = categories.map(categorie => {
       let filtrados = array.filter(event => event.category === categorie)
       return reduceStats(filtrados,property)
