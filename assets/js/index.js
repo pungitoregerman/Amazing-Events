@@ -1,138 +1,94 @@
 const containerHomeCards = document.getElementById("container-cards-home");
 const containerUpcomingEventsCards = document.getElementById("container-cards-upcomingEvents");
 const containerPastEventsCards = document.getElementById("container-cards-pastEvents");
-let dateOfEvents;
-let arrayEvents= [];
+const checkbox = document.getElementById('js-container-category') 
+const search = document.getElementById('input-search')
+let events;
+let date;
+let eventsPast;
+let eventsComing;
+let data
 
-dateOfEvents = data.currentDate;
-arrayEvents = data.events;
-let arrayEventsUpComing = arrayEvents.filter(events => events.date > dateOfEvents)
-let arrayEventsPast = arrayEvents.filter(events => events.date < dateOfEvents)
-
-
-/* Agregar categorias checkboxs dinamicamente */
-const categories = new Set(arrayEvents.map((events) => events.category) 
-                                      .sort())
-//recorre el array y busca la propiedad de categorias
-//ordenar alfabeticamente
-//Crea un objeto con las categorias y deja 1 solo si tiene duplicado
-let checkbox = document.getElementById('js-container-category')
-// forEach hago que itere categorys y por cada categoria la agregue atravez de un input  en el container checkbox
-categories.forEach(function (cat) {
-  checkbox.innerHTML += `<input id="categoria" class="valuesCheckbox gap-3" type="checkbox" value="${cat}"> ${cat} </label> `
-})
-/* FIN gregar categorias checkboxs dinamicamente */
-
-if(containerHomeCards){
-   let checkbox = document.getElementById('container-category')
-   arrayEvents.forEach(events => addCards(events,containerHomeCards))
+async function apiAmazingEvents(){
+  try{
+      data = await fetch('https://mh-amazing.herokuapp.com/amazing')    
+      data = await data.json()
+      events = data.events
+      date = data.date
+      eventsPast = events.filter(e=> e.date < date)
+      eventsComing = events.filter(e=> e.date > date)
   
-   /* EMPIEZA BOTON BUSQUEDA */
-  const buttonSearch = document.getElementById('button-search')
-  buttonSearch.addEventListener('click', () =>{
-  const inputSearch = document.getElementById('input-search').value
-  console.log(inputSearch)
-  filterText(arrayEvents,inputSearch,containerHomeCards)
-  
+    crearCheckboxs(events,checkbox);
+    if(containerHomeCards){
+       toPrintCards(events,containerHomeCards)
+       search.addEventListener('keyup',e=>filtrar(events,containerHomeCards))
+      checkbox.addEventListener('change',e=> filtrar(events,containerHomeCards))
+    }
+    if(containerUpcomingEventsCards){
+      toPrintCards(eventsComing,containerUpcomingEventsCards)
+      search.addEventListener('keyup',e=>filtrar(eventsComing,containerUpcomingEventsCards))
+      checkbox.addEventListener('change',e=> filtrar(eventsComing,containerUpcomingEventsCards))
+    }
+    if(containerPastEventsCards){
+      toPrintCards(eventsPast,containerPastEventsCards) 
+      search.addEventListener('keyup',e=>filtrar(eventsPast,containerPastEventsCards))
+      checkbox.addEventListener('change',e=> filtrar(eventsPast,containerPastEventsCards))
+    } 
+  }catch(error){
+    console.log('Hubo un error al consumir la API')
+  }
+}
+apiAmazingEvents()
+
+
+/* FUNCIONES */
+function crearCheckboxs(eventos,contenedor){
+  let fn = eventos => eventos.category
+  let categorias = new Set(eventos.filter(fn).map(fn))
+  categorias.forEach(categoria =>{
+    contenedor.innerHTML +=`<input class="categoria" class="valuesCheckbox gap-3" type="checkbox" value="${categoria}"> ${categoria} </label> `
   })
- /*FIN BOTON BUSQUEDA */
 }
-if(containerUpcomingEventsCards){
-  const checkbox = document.getElementById('container-category')
-                  arrayEventsUpComing.forEach(events => addCards(events,containerUpcomingEventsCards))
-
-  /* BOTON BUSQUEDA */
-  const buttonSearch = document.getElementById('button-search')
-     buttonSearch.addEventListener('click', () =>{
-     const inputSearch = document.getElementById('input-search').value
-     console.log(inputSearch)
-     filterText(arrayEventsUpComing,inputSearch,containerUpcomingEventsCards)
-     })
-  /* FIN BOTON BUSQUEDA */
-}
-if(containerPastEventsCards){
-  const checkbox = document.getElementById('container-category')
-     arrayEventsPast.forEach(events => addCards(events,containerPastEventsCards))
-
-     /* BOTON BUSQUEDA */
-     const buttonSearch = document.getElementById('button-search')
-     buttonSearch.addEventListener('click', () =>{
-     const inputSearch = document.getElementById('input-search').value
-     console.log(inputSearch)
-     filterText(arrayEventsPast,inputSearch,containerPastEventsCards)
-     })
-   /* FIN BOTON BUSQUEDA */
-
-   
-} 
-
-function addCards(dataArray,containerCards){
+function createCard(evento){
     let div = document.createElement("div");
-    div.className = "row gap-3";
-    div.innerHTML += `
+    div.classList = "row gap-3";
+    div.innerHTML = `
       <div class="card mb-2 p-2 d-flex justify-content-between" style="width: 18rem;">
-      <img src="${dataArray.image}" class="card-img-top" alt="${dataArray.name}">
+      <img src="${evento.image}" class="card-img-top" alt="${evento.name}">
       <div class="card-body">
-      <h5 class="card-title">${dataArray.name}</h5>
-      <p class="card-text">${dataArray.description}</p>
+      <h5 class="card-title">${evento.name}</h5>
+      <p class="card-text">${evento.description}</p>
       <div class="d-flex  flex-direction-row">
           <div class="col-6">
-          <p>Price: ${dataArray.price}</p>
+          <p>Price: ${evento.price}</p>
           </div>
           <div class="col-6">
-          <a href="./details.html?events=${dataArray._id}" class="btn btn-primary bg-button-main">More details</a>
+          <a href="./details.html?events=${evento.id}" class="btn btn-primary bg-button-main">More details</a>
           </div>
       </div> 
       </div>
       `
-      containerCards.appendChild(div);
-} 
+      return div
+}
 
-function updateArray(container) {
-    container.innerHTML = ''
-}  
-
-function filterText(arrayEvents,texto,container){
-  let arrayFiltrado = arrayEvents.filter(e =>e.name.toLowerCase().includes(texto.toLowerCase()))
-  if(texto === ''){
-     updateArray(container)
-     arrayEvents.forEach(e=> addCards(e,container))
-     return arrayEvents
+function toPrintCards(eventos,contenedor){
+  contenedor.innerHTML = ''
+  if(eventos.length > 0) {
+      let fragment = document.createDocumentFragment()
+      eventos.forEach( event => fragment.appendChild(createCard(event)))
+      contenedor.appendChild(fragment)
   }else{
-    updateArray(container)
-    arrayFiltrado.forEach(e=> addCards(e,container))
-    return arrayFiltrado
+    contenedor.innerHTML = '<h2> NO HAY COINCIDENCIA CON LOS EVENTOS ESTABLECIDOS.<br></h2>'
+    contenedor.innerHTML += '<h4> REVISE EL NOMBRE INGRESADO.</h4>'
   }
 }
 
-function filterCheckBox(arrayEvents,container){
-  let checkboxInHtml = document.querySelectorAll('input[type="checkbox"]')
-  let arrayCheckboxsAll = Array.from(checkboxInHtml)
-  let arrayCheckeds = arrayCheckboxsAll.filter(e=> e.checked)
-                                       .map(e=> e.value)
-  console.log(arrayCheckeds)
-  if(arrayCheckeds.length > 0){
-    let arrayChecksChange = arrayEvents.filter(e=> arrayCheckeds.includes(e.category))
-    updateArray(container)
-    return arrayChecksChange
-  }
-  updateArray(container)
-  return arrayEvents
+function filtrar(array,container){
+  let checked = [...document.querySelectorAll( 'input[type="checkbox"]:checked' )].map( ele => ele.value)
+  let filtradosPorCategoria = array.filter( e => checked.includes(e.category) || checked.length === 0)
+  let filtradosPorSearch = filtradosPorCategoria.filter(e=>e.name.toLowerCase().includes(search.value.toLowerCase()))
+  toPrintCards(filtradosPorSearch,container)
 }
 
-/* FILTRO CHECKBOX */
-  checkbox.addEventListener('change', (e) => {
-  if(containerHomeCards){
-    let arraysCategorias = filterCheckBox(arrayEvents,containerHomeCards)
-    arraysCategorias.forEach(e=> addCards(e,containerHomeCards))
-  }
-  if(containerUpcomingEventsCards){
-    let arraysCategorias = filterCheckBox(arrayEventsUpComing,containerUpcomingEventsCards)
-    arraysCategorias.forEach(e=> addCards(e,containerUpcomingEventsCards))
-  }
-  if(containerPastEventsCards){
-    let arraysCategorias = filterCheckBox(arrayEventsPast,containerPastEventsCards)
-    arraysCategorias.forEach(e=> addCards(e,containerPastEventsCards))
-  }
-})  
+
 

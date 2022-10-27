@@ -63,113 +63,53 @@
 
     <main>
       <div class="container p-5">
-        <table class="table table-striped border-dark ">
+        
+        <table id="tableOne" class="class= table table-striped border-dark">
           <thead>
             <tr>
-              <th class="border-dark">Events Statics</th>
+              <th class="border-dark col-4">Events with the lowest percentage of attendance</th>
+              <th class="border-dark col-4">
+                Events with the highest earnings of attendance</th>
+              <th class="border-dark col-3">Event with larger capacity</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td class="border-dark col-4">
-                Events with the highest percentage of attendance
-              </td>
-              <td class="border-dark col-4">
-                Events with the highest percentage of attendance
-              </td>
-              <td class="border-dark col-3">Event with larger capacity</td>
-            </tr>
-
-            <tr>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-3 table-secondary"></td>
-            </tr>
-            <tr>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-3 table-secondary"></td>
-            </tr>
-          </tbody>
         </table>
 
-        <table class="table table-striped  border-dark">
+
+        <table id="tableTwo" class="class= table table-striped border-dark">
           <thead>
             <tr>
               <th class="ms-auto">Upcoming events statistics by category</th>
             </tr>
+            <tr>
+              <th class="border-dark col-4">Categories</th>
+              <th class="border-dark col-4 text-center">Revenues</th>
+              <th class="border-dark col-3 text-center">Percentage of attendance</th>
+            </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td class="border-dark col-4">Categories</td>
-              <td class="border-dark col-4">Revenues</td>
-              <td class="border-dark col-3">Percentage of attendance</td>
-            </tr>
-
-            <tr>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-3 table-secondary"></td>
-            </tr>
-            <tr>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-3 table-secondary"></td>
-            </tr>
-            <tr>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-3 table-secondary"></td>
-            </tr>
-          </tbody>
         </table>
+      
 
-        <table class="table table-striped border-dark">
+        <table id="tableThree" class="table table-striped border-dark ">
           <thead>
             <tr>
               <th class="ms-auto">Past events statistics by category</th>
             </tr>
+            <tr>
+              <th class="border-dark col-4">Categories</th>
+              <th class="border-dark col-4 text-center">Revenues</th>
+              <th class="border-dark col-3 text-center">Percentage of attendance</th>
+            </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td class="border-dark col-4">Categories</td>
-              <td class="border-dark col-4">Revenues</td>
-              <td class="border-dark col-3">Percentage of attendance</td>
-            </tr>
-
-            <tr>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-3 table-secondary"></td>
-            </tr>
-            <tr>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-3 table-secondary"></td>
-            </tr>
-            <tr>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-3 table-secondary"></td>
-            </tr>
-            <tr>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-3 table-secondary"></td>
-            </tr>
-            <tr>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-4 table-secondary"></td>
-              <td class="border-dark col-3 table-secondary"></td>
-            </tr>
-          </tbody>
+         
+            
         </table>
-      </div>
+      </div> 
     </main>
 
     <footer class="bg-dark">
       <div class="container">
-          <div class="row justify-content-beetwen"> <!-- ig fb wpp -->
+          <div class="row justify-content-beetwen"> 
               <div class="col-6 gap-2 p-2">
               <a href="https://www.instagram.com/" target="_blank"><img src="./assets/img/iglogo.png" alt="logoInstagram" width="40px" height="40px"></a>
               <a href="https://es-la.facebook.com/" target="_blank"><img src="./assets/img/fblogo.png" alt="logoFacebook" width="80px" height="40px"></a>
@@ -181,6 +121,7 @@
           </div>
       </div>
   </footer>
+    <script src="./assets/js/stats.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 </body>
 </html>
