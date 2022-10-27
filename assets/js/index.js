@@ -50,7 +50,7 @@ function crearCheckboxs(eventos,contenedor){
   })
 }
 function createCard(evento){
-  let div = document.createElement("div");
+    let div = document.createElement("div");
     div.classList = "row gap-3";
     div.innerHTML = `
       <div class="card mb-2 p-2 d-flex justify-content-between" style="width: 18rem;">

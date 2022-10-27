@@ -37,9 +37,9 @@ staticsAmazing();
 /* FUNCIONES TABLA UNO */
 function tableCreate(contenedor,mayorAsistencia, menorAsistencia, mayorCapacidad){
   contenedor.innerHTML += `
-            <td>${mayorAsistencia.name}</td>
-            <td>${menorAsistencia.name}</td>
-            <td>${mayorCapacidad.name}</td>`
+            <td>${mayorAsistencia.name} | ${mayorAsistencia.assistance}</td>
+            <td>${menorAsistencia.name} | ${menorAsistencia.assistance}</td>
+            <td>${mayorCapacidad.name} | ${mayorCapacidad.capacity}</td>`
 }
 function calcularMayorAsistencia(array){
   let asistenciaOrdenada = [...array.sort((evento1, evento2) =>(100 * evento1.assistance)/evento1.capacity - (100*evento2.assistance)/evento2.capacity)];
@@ -90,7 +90,7 @@ function reduceStats (array,property){
           [property]: element1[property] + element2[property]
       }
   }, StateZero)
-  stats.promedio = (100 * stats[property] / stats.capacity).toFixed(0)
+  stats.promedio = Number(100 * stats[property] / stats.capacity).toFixed(2)
   return stats
 }
 
